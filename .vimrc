@@ -14,3 +14,8 @@ inoremap ' ''<left>
 inoremap ( ()<left>
 inoremap [ []<left>
 inoremap { {}<left>
+
+""" Plugins
+""" CtrlP
+" Ignore folders
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
