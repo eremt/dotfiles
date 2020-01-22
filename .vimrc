@@ -16,6 +16,10 @@ inoremap [ []<left>
 inoremap { {}<left>
 
 """ Plugins
-""" CtrlP
+""" ctrlp.vim
 " Ignore folders
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+
+""" vim-vue
+" Disable all pre-processors and only highlight html/js/css
+let g:vue_pre_processors = []
