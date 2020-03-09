@@ -8,13 +8,21 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 
-" Close brackets
+" Close quotes, parentheses and brackets
 inoremap " ""<left>
 inoremap ' ''<left>
 inoremap ` ``<left>
 inoremap ( ()<left>
 inoremap [ []<left>
 inoremap { {}<left>
+
+" Wrap visual selection with quotes, parentheses and brackets
+vnoremap " c""<esc>P
+vnoremap ' c''<esc>P
+vnoremap ` c``<esc>P
+vnoremap ( c()<esc>P
+vnoremap [ c[]<esc>P
+vnoremap { c{}<esc>P
 
 """ Plugins
 """ ctrlp.vim
