@@ -24,6 +24,10 @@ vnoremap ( c()<esc>P
 vnoremap [ c[]<esc>P
 vnoremap { c{}<esc>P
 
+" Move current line down/up
+nnoremap <C-j> dd<esc>p
+nnoremap <C-k> dd<esc><up>P
+
 """ Plugins
 """ ctrlp.vim
 " Ignore folders
