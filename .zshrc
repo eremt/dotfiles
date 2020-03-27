@@ -11,8 +11,10 @@ HISTSIZE=1000
 SAVEHIST=1000
 HISTFILE=~/.zsh_history
 
-alias ll='ls -l'
-alias la='ls -la'
+alias ll='ls --color -l'
+alias la='ls --color -la'
+
+alias grep='grep --color'
 
 # .dotfiles repository alias
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
