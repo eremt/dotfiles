@@ -32,6 +32,7 @@ nnoremap <C-k> dd<esc><up>P
 """ ctrlp.vim
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git' " Ignore folders
 let g:ctrlp_show_hidden = 1 " Show hidden files
+set wildignore+=*.swp,*.zip " Hide files
 
 """ emmet-vim
 let g:user_emmet_expandabbr_key='<Tab>'
