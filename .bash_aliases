@@ -1,7 +1,10 @@
+alias ls='ls --color'
 alias ll='ls --color -l'
 alias la='ls --color -la'
 
 alias grep='grep --color'
+alias fgrep='fgrep --color'
+alias egrep='egrep --color'
 
 alias vi='vim'
 
