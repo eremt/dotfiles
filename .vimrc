@@ -1,5 +1,7 @@
 " Line numbers
 set nu rnu
+" Syntax highlighting
+syntax on
 
 " Indentation
 set autoindent
@@ -30,6 +32,7 @@ nnoremap <C-k> dd<esc><up>P
 
 """ Plugins
 """ ctrlp.vim
+let g:ctrlp_working_path_mode = 0 " No working dir
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git' " Ignore folders
 let g:ctrlp_show_hidden = 1 " Show hidden files
 set wildignore+=*.swp,*.zip " Hide files
