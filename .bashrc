@@ -94,3 +94,5 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+source /usr/share/git/completion/git-completion.bash

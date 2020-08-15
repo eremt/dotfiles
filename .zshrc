@@ -1,8 +1,23 @@
-# Set up the prompt
+# Use syntax highlighting
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# Set up the prompt
 autoload -Uz promptinit
 promptinit
 prompt adam1
+
+# Git branch in right prompt
+autoload -Uz vcs_info
+precmd_vcs_info() { vcs_info }
+precmd_functions+=( precmd_vcs_info )
+setopt prompt_subst
+RPROMPT=\$vcs_info_msg_0_
+zstyle ':vcs_info:git:*' formats '%F{240}%b'
+zstyle ':vcs_info:*' enable git
+
+# Git completion
+zstyle ':completion:*:*:git:*' script /usr/share/git/completion/git-completion.zsh
+autoload -Uz compinit && compinit
 
 setopt histignorealldups sharehistory
 
