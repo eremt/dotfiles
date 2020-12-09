@@ -9,5 +9,5 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 ```
 
 ```bash
-git clone https://github.com/eremt/dotfiles.git
+git clone --bare https://github.com/eremt/dotfiles.git $HOME/.dotfiles
 ```
