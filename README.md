@@ -1,17 +1,19 @@
 # dotfiles
 
+## Setup
+Install applications
 ```bash
 sudo apt install git vim
 ```
-
+Add the alias
 ```bash
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 ```
-
+Clone the repository
 ```bash
 git clone --bare https://github.com/eremt/dotfiles.git $HOME/.dotfiles
 ```
-Checkout repository
+Checkout files
 ```bash
 dotfiles checkout -f
 ```
