@@ -11,7 +11,7 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 ```
 Clone the repository
 ```bash
-git clone --bare https://github.com/eremt/dotfiles.git $HOME/.dotfiles
+git clone --bare git@github.com:eremt/dotfiles.git
 ```
 Checkout files
 ```bash
