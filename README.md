@@ -19,5 +19,5 @@ dotfiles checkout -f
 ```
 Ignore untracked
 ```bash
-config config --local status.showUntrackedFiles no
+dotfiles config --local status.showUntrackedFiles no
 ```
