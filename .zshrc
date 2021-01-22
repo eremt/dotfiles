@@ -1,6 +1,3 @@
-# Use syntax highlighting
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 # Set up the prompt
 autoload -Uz promptinit
 promptinit
@@ -15,8 +12,7 @@ RPROMPT=\$vcs_info_msg_0_
 zstyle ':vcs_info:git:*' formats '%F{240}%b'
 zstyle ':vcs_info:*' enable git
 
-# Git completion
-zstyle ':completion:*:*:git:*' script /usr/share/git/completion/git-completion.zsh
+# Completion
 autoload -Uz compinit && compinit
 
 setopt histignorealldups sharehistory
@@ -27,3 +23,6 @@ SAVEHIST=1000
 HISTFILE=~/.zsh_history
 
 source ~/.bash_aliases
+
+# Use syntax highlighting
+# source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
