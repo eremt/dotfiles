@@ -4,5 +4,5 @@
   ci = commit
   st = status
 
-#[includeIf "gitdir:~/projects/dir/"]
-  #path = ~/projects/dir/.gitconfig
+[core]
+	excludesfile = /home/user/.gitignore
