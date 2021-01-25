@@ -3,7 +3,7 @@
 ## Setup
 Install applications
 ```bash
-sudo apt install git vim zsh
+sudo apt install git vim zsh ranger
 ```
 Add the alias
 ```bash
