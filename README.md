@@ -1,5 +1,8 @@
 # Dotfiles
-This repository contains my dotfiles. Install using one of the scripts or follow the instructions below.
+This repository contains my dotfiles.
+
+## Installation
+Install using one of the scripts or follow the instructions below.
 
 ### Scripts
 **Debian/Ubuntu**
