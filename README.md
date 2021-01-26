@@ -1,6 +1,7 @@
 # Dotfiles
 ## Setup
 Install using script.
+
 **Debian/Ubuntu**
 ```bash
 # TODO
