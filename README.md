@@ -7,7 +7,9 @@
 sudo apt install -y vim zsh ranger git
 ```
 **Arch**
-*TODO*
+```bash
+# TODO
+```
 
 Clone **vim** packages.
 ```bash
@@ -54,4 +56,6 @@ startx
 ```
 
 **qemu, kvm, virt-manager**
-*TODO*
+```bash
+# TODO
+```
