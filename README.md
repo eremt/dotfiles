@@ -1,7 +1,7 @@
 # Dotfiles
-## Setup
-Install using script.
+This repository contains my dotfiles. Install using one of the scripts or follow the instructions below.
 
+### Scripts
 **Debian/Ubuntu**
 ```bash
 # TODO
@@ -11,8 +11,7 @@ Install using script.
 # TODO
 ```
 
-Or follow the instructions below.
-### Install packages
+### Instructions
 **Debian/Ubuntu**
 ```bash
 sudo apt install -y vim zsh ranger git
