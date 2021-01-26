@@ -1,6 +1,16 @@
 # Dotfiles
 ## Setup
+Install using script.
+**Debian/Ubuntu**
+```bash
+# TODO
+```
+**Arch**
+```bash
+# TODO
+```
 
+Or follow the instructions below.
 ### Install packages
 **Debian/Ubuntu**
 ```bash
@@ -14,7 +24,7 @@ sudo apt install -y vim zsh ranger git
 Clone **vim** packages.
 ```bash
 mkdir -p $HOME/.vim/pack/plugins/start && \
-git clone https://github.com/ctrlpvim/ctrlp.vim $HOME/.vim/pack/plugins/start/ctrpvim && \
+git clone https://github.com/ctrlpvim/ctrlp.vim $HOME/.vim/pack/plugins/start/ctrp.vim && \
 git clone https://github.com/mattn/emmet-vim $HOME/.vim/pack/plugins/start/emmet-vim
 ```
 Set **zsh** as default shell.
