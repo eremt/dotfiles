@@ -17,11 +17,11 @@ Install using one of the scripts or follow the instructions below.
 ### Instructions
 **Debian/Ubuntu**
 ```bash
-sudo apt install -y vim zsh ranger git
+sudo apt install vim zsh ranger git
 ```
 **Arch**
 ```bash
-# TODO
+sudo pacman -Syu vim zsh ranger git
 ```
 
 Clone **vim** packages.
