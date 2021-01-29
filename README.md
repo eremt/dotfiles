@@ -43,8 +43,10 @@ dotfiles checkout -f && \
 dotfiles config --local status.showUntrackedFiles no
 ```
 
-### Optional
-**dwm, st, dmenu**
+## Optional
+
+### [dwm](https://dwm.suckless.org/), [st](https://st.suckless.org/), [dmenu](https://dmenu.suckless.org/)
+
 Install xorg, build-essential and Xlib header files then clone dwm, st and dmenu
 ```bash
 sudo apt install -y xorg build-essential libx11-dev libxft-dev libxinerama-dev && \
