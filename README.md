@@ -26,7 +26,9 @@ sudo pacman -Syu vim zsh ranger git
 
 Clone **vim** packages.
 ```bash
+mkdir -p $HOME/.vim/pack/themes/start && \
 mkdir -p $HOME/.vim/pack/plugins/start && \
+git clone https://github.com/dracula/vim.git $HOME/.vim/pack/themes/start/dracula && \
 git clone https://github.com/ctrlpvim/ctrlp.vim $HOME/.vim/pack/plugins/start/ctrp.vim && \
 git clone https://github.com/mattn/emmet-vim $HOME/.vim/pack/plugins/start/emmet-vim
 ```
