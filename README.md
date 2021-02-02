@@ -76,9 +76,12 @@ Add start script to .xinitrc.
 ```bash
 echo 'exec dwm' >> $HOME/.xinitrc
 ```
-To start run.
+
+Add the following lines to your `.zprofile` to run on login:
 ```bash
-startx
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+  exec startx
+fi
 ```
 
 **qemu, kvm, virt-manager**
