@@ -45,7 +45,7 @@ dotfiles checkout -f && \
 dotfiles config --local status.showUntrackedFiles no
 ```
 
-### dwm, st and dmenu
+### dwm, st, dmenu
 Check out [github.com/eremt/dwm](https://github.com/eremt/dwm) to install my builds of suckless' [dwm](https://dwm.suckless.org/), [st](https://st.suckless.org/) and [dmenu](https://dmenu.suckless.org/).
 
 ### qemu, kvm, virt-manager
