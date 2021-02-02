@@ -49,13 +49,21 @@ dotfiles config --local status.showUntrackedFiles no
 
 ### [dwm](https://dwm.suckless.org/), [st](https://st.suckless.org/), [dmenu](https://dmenu.suckless.org/)
 
-Install xorg, build-essential and Xlib header files then clone dwm, st and dmenu
+Install xorg and other dependencies
+**Debian/Ubuntu**
 ```bash
-sudo apt install -y xorg build-essential libx11-dev libxft-dev libxinerama-dev && \
+sudo apt install xorg build-essential libx11-dev libxft-dev libxinerama-dev
+```
+**Arch**
+```bash
+sudo pacman -S xorg xorg-xinit base-devel libx11 libxft libxinerama
+```
+Clone dwm, st and dmenu
+```bash
 mkdir $HOME/.suckless && \
-git clone https://git.suckless.org/dwm $HOME/.suckless/dwm && \
-git clone https://git.suckless.org/st  $HOME/.suckless/st && \
-git clone https://git.suckless.org/dmenu $HOME/.suckless/dmenu
+git clone https://github.com/eremt/dwm ~/.suckless/dwm && \
+git clone https://github.com/eremt/st  ~/.suckless/st && \
+git clone https://github.com/eremt/dmenu ~/.suckless/dmenu
 ```
 Build dwm, st and dmenu
 ```bash
