@@ -26,7 +26,7 @@ sudo pacman -Syu vim zsh ranger git which
 ```
 Create an alias called `dotfiles` for the repository:
 ```bash
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME' && \
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
 ```
 Clone and check out the repository:
 ```bash
