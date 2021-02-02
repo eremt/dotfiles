@@ -50,6 +50,7 @@ dotfiles config --local status.showUntrackedFiles no
 ### [dwm](https://dwm.suckless.org/), [st](https://st.suckless.org/), [dmenu](https://dmenu.suckless.org/)
 
 Install xorg and other dependencies
+
 **Debian/Ubuntu**
 ```bash
 sudo apt install xorg build-essential libx11-dev libxft-dev libxinerama-dev
