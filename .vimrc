@@ -25,8 +25,8 @@ vnoremap [ c[]<esc>P
 vnoremap { c{}<esc>P
 
 " Move current line down/up
-nnoremap <C-j> dd<esc>p
-nnoremap <C-k> dd<esc><up>P
+nnoremap <C-j> :m+1<CR>==
+nnoremap <C-k> :m-2<CR>==
 
 """ Themes
 " Dracula
