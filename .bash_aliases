@@ -1,8 +1,8 @@
 alias cd.='cd ..'
 
 alias ls='ls --color'
-alias ll='ls --color -l'
-alias la='ls --color -lA'
+alias ll='ls --color -lh'
+alias la='ls --color -lAh'
 
 alias grep='grep --color'
 alias fgrep='fgrep --color'
