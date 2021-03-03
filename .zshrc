@@ -26,3 +26,7 @@ source ~/.bash_aliases
 
 # Use syntax highlighting
 # source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# vi mode
+bindkey -v
+export KEYTIMEOUT=1
