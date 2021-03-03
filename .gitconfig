@@ -5,4 +5,4 @@
   st = status
 
 [core]
-	excludesfile = /home/user/.gitignore
+  excludesfile = /home/user/.gitignore
