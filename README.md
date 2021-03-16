@@ -7,6 +7,7 @@ This repository contains my dotfiles.
 
 ## Installation
 Install using one of the scripts or follow the instructions below.
+
 **Debian/Ubuntu**
 ```bash
 # TODO
