@@ -4,9 +4,9 @@ alias ls='ls --color'
 alias ll='ls --color -lh'
 alias la='ls --color -lAh'
 
-alias grep='grep --color'
-alias fgrep='fgrep --color'
-alias egrep='egrep --color'
+alias grep='grep --color --exclude-dir={.git,node_modules}'
+alias fgrep='fgrep --color --exclude-dir={.git,node_modules}'
+alias egrep='egrep --color --exclude-dir={.git,node_modules}'
 
 alias vi='vim'
 alias r='ranger'
