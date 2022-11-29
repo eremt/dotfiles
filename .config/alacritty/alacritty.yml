@@ -1,0 +1,16 @@
+window:
+  padding:
+    x: 4
+    y: 4
+
+scrolling:
+  history: 10000
+  multiplier: 3
+
+font:
+  size: 10.0
+  normal:
+    family: Ubuntu Mono
+
+key_bindings:
+  - { key: Return, mods: Shift|Control, action: SpawnNewInstance }
