@@ -1,4 +1,6 @@
 #!/bin/bash
+# TODO
+# - handle packages not in debian repositories (firefox, alacritty)
 
 #
 # CONFIG
@@ -36,7 +38,7 @@ prompt_install_packages () {
 }
 
 prompt_Yn () {
-  read -rp "$*? [Y/n]" yn
+  read -rp "$* [Y/n]" yn
   if [[ $yn =~ ^(yes|y|)$ ]]; then
     return 0
   else
@@ -44,7 +46,7 @@ prompt_Yn () {
   fi
 }
 prompt_yN () {
-  read -rp "$*? [y/N]" yn
+  read -rp "$* [y/N]" yn
   if [[ $yn =~ ^(yes|y)$ ]]; then
     return 0
   else
@@ -96,36 +98,36 @@ packages_fonts_pacman=(
 # INSTALL
 #
 # 1 - Install dependencies
-if prompt_Yn "Install dependencies (${packages_deps[*]})"; then
+if prompt_Yn "Install dependencies (${packages_deps[*]})?"; then
   cmd_install_packages "${packages_deps[@]}"
 fi
 #
 # 2 - Clone and checkout $GIT_DOTFILES
-if prompt_Yn "Clone $GIT_DOTFILES"; then
+if prompt_Yn "Clone $GIT_DOTFILES?"; then
   git clone --bare "$GIT_DOTFILES" "$DIR_DOTFILES"
   git --git-dir="$DIR_DOTFILES" --work-tree="$HOME" config --local status.showUntrackedFiles no
-  if prompt_Yn "Checkout $GIT_DOTFILES, this will overwrite some files"; then
+  if prompt_Yn "Checkout $GIT_DOTFILES, this will overwrite some files?"; then
     git --git-dir="$DIR_DOTFILES" --work-tree="$HOME" checkout -f
   fi
 fi
 #
 # 3 - Prompt install for rest of packages
-if prompt_Yn "Select core packages (${packages_core[*]})"; then
+if prompt_Yn "Select core packages (${packages_core[*]})?"; then
   prompt_install_packages "${packages_core[@]}"
 fi
-if prompt_Yn "Select editors (${packages_editors[*]})"; then
+if prompt_Yn "Select editors (${packages_editors[*]})?"; then
   prompt_install_packages "${packages_editors[@]}"
 fi
-if prompt_Yn "Select browsers (${packages_www[*]})"; then
+if prompt_Yn "Select browsers (${packages_www[*]})?"; then
   prompt_install_packages "${packages_www[@]}"
 fi
-if prompt_Yn "Select miscellaneous (${packages_misc[*]})"; then
+if prompt_Yn "Select miscellaneous (${packages_misc[*]})?"; then
   prompt_install_packages "${packages_misc[@]}"
 fi
 #
 # 4 - Prompt confirmation and install selected
 echo "Selected: ${packages_selected[*]}"
-if prompt_yN "Confirm install"; then
+if prompt_yN "Confirm install?"; then
   cmd_install_packages "${packages_selected[*]}"
 fi
 
