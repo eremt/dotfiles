@@ -1,0 +1,194 @@
+#!/bin/bash
+
+#
+# CONFIG
+DIR_DOTFILES=$HOME/.dotfiles
+GIT_DOTFILES=https://github.com/eremt/dotfiles
+
+#
+# PRE INSTALL
+PACKAGE_MANAGER=""
+cmd_package_manager=""
+get_package_manager () {
+  if command -v apt &> /dev/null; then
+    PACKAGE_MANAGER="apt"
+    cmd_package_manager="$PACKAGE_MANAGER install"
+  elif command -v pacman &> /dev/null; then
+    PACKAGE_MANAGER="pacman"
+    cmd_package_manager="$PACKAGE_MANAGER -S"
+  else
+    echo "Couldn't get package manager, aborting."
+    exit 1
+  fi
+}
+get_package_manager
+
+cmd_install_packages () {
+  eval sudo "$cmd_package_manager $*"
+}
+packages_selected=()
+prompt_install_packages () {
+  for p in "$@"; do
+    if prompt_Yn "Install $p?"; then
+      packages_selected+=("$p")
+    fi
+  done
+}
+
+prompt_Yn () {
+  read -rp "$*? [Y/n]" yn
+  if [[ $yn =~ ^(yes|y|)$ ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+prompt_yN () {
+  read -rp "$*? [y/N]" yn
+  if [[ $yn =~ ^(yes|y)$ ]]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+#
+# PACKAGES
+packages_deps=(
+  "git"
+)
+packages_core=(
+  "zsh"
+  "curl"
+  "wget"
+  "alacritty"
+  "sxhkd"
+  "rofi"
+)
+packages_editors=(
+  "vim"
+  "neovim"
+)
+packages_www=(
+  "firefox"
+  "chromium"
+)
+packages_misc=(
+  "libreoffice"
+  "gimp"
+  "inkscape"
+)
+
+#
+# FONTS
+packages_fonts_apt=(
+  "font-awesome"
+  "fonts-ubuntu"
+  "fonts-jetbrains-mono"
+)
+packages_fonts_pacman=(
+  "ttf-font-awesome"
+  "ttf-ubuntu-font-family"
+  "ttf-jetbrains-mono"
+)
+
+#
+# INSTALL
+#
+# 1 - Install dependencies
+if prompt_Yn "Install dependencies (${packages_deps[*]})"; then
+  cmd_install_packages "${packages_deps[@]}"
+fi
+#
+# 2 - Clone and checkout $GIT_DOTFILES
+if prompt_Yn "Clone $GIT_DOTFILES"; then
+  git clone --bare "$GIT_DOTFILES" "$DIR_DOTFILES"
+  git --git-dir="$DIR_DOTFILES" --work-tree="$HOME" config --local status.showUntrackedFiles no
+  if prompt_Yn "Checkout $GIT_DOTFILES, this will overwrite some files"; then
+    git --git-dir="$DIR_DOTFILES" --work-tree="$HOME" checkout -f
+  fi
+fi
+#
+# 3 - Prompt install for rest of packages
+if prompt_Yn "Select core packages (${packages_core[*]})"; then
+  prompt_install_packages "${packages_core[@]}"
+fi
+if prompt_Yn "Select editors (${packages_editors[*]})"; then
+  prompt_install_packages "${packages_editors[@]}"
+fi
+if prompt_Yn "Select browsers (${packages_www[*]})"; then
+  prompt_install_packages "${packages_www[@]}"
+fi
+if prompt_Yn "Select miscellaneous (${packages_misc[*]})"; then
+  prompt_install_packages "${packages_misc[@]}"
+fi
+#
+# 4 - Prompt confirmation and install selected
+echo "Selected: ${packages_selected[*]}"
+if prompt_yN "Confirm install"; then
+  cmd_install_packages "${packages_selected[*]}"
+fi
+
+#
+# POST INSTALL
+# - clone packages_editor plugins and themes
+# - setup packages_www policies.json
+
+# Vim/Neovim
+plugins_vim=(
+  "https://github.com/mattn/emmet-vim"
+)
+themes_vim=(
+  "https://github.com/t184256/vim-boring"
+)
+plugins_nvim=(
+  "${plugins_vim[@]}"
+  "https://github.com/neovim/nvim-lspconfig"
+)
+DIR_ROOT_VIM=$HOME/.vim/pack
+DIR_ROOT_NVIM=$HOME/.local/share/nvim/site/pack
+DIR_THEMES_VIM=themes/start
+DIR_PLUGINS_VIM=plugins/start
+postinstall_vi () {
+  # Vim
+  if command -v vim &> /dev/null; then
+    mkdir -p "$DIR_ROOT_VIM/$DIR_PLUGINS_VIM" "$DIR_ROOT_VIM/$DIR_THEMES_VIM"
+    for plugin in "${plugins_vim[@]}"; do
+      name=$(basename "$plugin")
+      git clone "$plugin" "$DIR_ROOT_VIM/$DIR_PLUGINS_VIM/$name"
+    done
+    for theme in "${themes_vim[@]}"; do
+      name=$(basename "$theme")
+      git clone "$theme" "$DIR_ROOT_VIM/$DIR_THEMES_VIM/$name"
+    done
+  fi
+
+  # Neovim
+  if command -v nvim &> /dev/null; then
+    mkdir -p "$DIR_ROOT_NVIM/$DIR_PLUGINS_VIM" "$DIR_ROOT_NVIM/$DIR_THEMES_VIM"
+    for plugin in "${plugins_nvim[@]}"; do
+      name=$(basename "$plugin")
+      git clone "$plugin" "$DIR_ROOT_NVIM/$DIR_PLUGINS_VIM/$name"
+    done
+    for theme in "${themes_vim[@]}"; do
+      name=$(basename "$theme")
+      git clone "$theme" "$DIR_ROOT_NVIM/$DIR_THEMES_VIM/$name"
+    done
+  fi
+}
+postinstall_vi
+
+# Firefox/Chromium
+DIR_ROOT_FIREFOX=/etc/firefox/policies
+DIR_ROOT_CHROMIUM=/etc/chromium/policies/managed
+postinstall_www () {
+  if command -v firefox &> /dev/null; then
+    sudo mkdir -p "$DIR_ROOT_FIREFOX"
+    sudo cp "$HOME/.config/mozilla/policies.json" "$DIR_ROOT_FIREFOX/policies.json"
+  fi
+  if command -v chromium &> /dev/null; then
+    sudo mkdir -p "$DIR_ROOT_CHROMIUM"
+    sudo cp "$HOME/.config/chromium/policies.json" "$DIR_ROOT_CHROMIUM/policies.json"
+  fi
+}
+postinstall_www
