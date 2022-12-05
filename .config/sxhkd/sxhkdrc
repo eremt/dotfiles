@@ -1,0 +1,9 @@
+super + p
+  rofi -show drun -show-icons
+
+XF86AudioRaiseVolume
+  amixer set Master 5%+
+XF86AudioLowerVolume
+  amixer set Master 5%-
+XF86AudioMute
+  amixer set Master toggle
