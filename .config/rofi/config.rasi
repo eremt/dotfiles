@@ -1,0 +1,60 @@
+configuration {
+  modi: "drun,window,ssh";
+  yoffset: -270; // 25% of 1080
+
+  font: "Jetbrains Mono 12";
+
+  ssh-command: "alacritty -e {ssh-client} {host} [-p {port}]";
+
+  /*
+   * Vim keys
+   * Control or Super as modifier
+   *
+   * Control/Super+[b/e]: cursor to beginning/end of word
+   * Control/Super+[0/4]: cursor to beginning/end of line
+   * Control/Super+[h/l]: mode-previous/mode-next
+   * Control/Super+[j/k]: down/up
+   * Control/Super+[d/u]: page-prev/page-next
+   * Control/Super+[g/G]: top/bottom
+   *
+   */
+  kb-remove-to-eol: ""; // Control+k
+  kb-row-up: "Up,Control+p,ISO_Left_Tab,Control+k,Super+k";
+  kb-accept-entry: "Control+m,Return,KP_Enter"; // Control+j
+  kb-row-down: "Down,Control+n,Control+j,Super+j";
+
+  kb-move-char-back: "Left"; // Control+b
+  kb-move-word-back: "Alt+b,Control+Left,Control+b,Super+b";
+  kb-clear-line: ""; // Control+w
+  kb-move-word-forward: "Alt+f,Control+Right,Control+e,Super+e";
+
+  kb-select-10: ""; // Super+0
+  kb-move-front: "Control+a,Control+0,Super+0";
+  kb-select-4: ""; // Super+4
+  kb-move-end: "Control+4,Super+4"; // Control+e
+
+  kb-remove-char-back: "BackSpace,Shift+BackSpace"; // Control+h
+  kb-mode-previous: "Shift+Left,Control+ISO_Left_Tab,Control+h,Super+h";
+
+  kb-mode-complete: ""; // Control+l
+  kb-mode-next: "Shift+Right,Control+Tab,Control+l,Super+l";
+
+  kb-remove-to-sol: ""; // Control+u
+  kb-page-prev: "Page_Up,Control+u,Super+u";
+  kb-remove-char-forward: "Delete"; // Control+d
+  kb-page-next: "Page_Down,Control+d,Super+d";
+
+  kb-cancel: "Escape,Control+bracketleft"; // Control+g
+  kb-row-first: "Home,KP_Home,Control+g,Super+g";
+  kb-row-last: "End,KP_End,Control+G,Super+G";
+}
+
+@theme "theme-dark"
+
+window {
+  width: 450px;
+}
+listview {
+  lines: 5;
+  fixed-num-lines: false;
+}

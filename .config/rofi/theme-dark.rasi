@@ -1,0 +1,136 @@
+/**
+ * dark theme
+ *
+**/
+* {
+  bg-dark:   #111;
+  bg-normal: #151515;
+  bg-light:  #222;
+
+  fg-dark:   #888;
+  fg-normal: #bbb;
+  fg-light:  #eee;
+
+  fg-active: #268bd2;
+  fg-urgent: #dc322f;
+
+  background-color: @bg-dark;
+}
+window {
+  padding: 8px;
+  background-color: @bg-dark;
+  border: 1;
+  border-color: @bg-light;
+}
+mainbox {
+  padding: 0;
+  border: 0;
+  children: [ mode-switcher, inputbar, message, listview ];
+}
+message {
+  padding: 0;
+  border: 0;
+}
+textbox {
+  text-color: @fg-normal;
+}
+listview {
+  padding: 0;
+  scrollbar: true;
+  spacing: 0;
+  border: 0;
+}
+element {
+  padding: 8px;
+  border: 0;
+}
+element normal.normal, element alternate.normal,
+element normal.active, element alternate.active,
+element normal.urgent, element alternate.urgent {
+  background-color: @bg-dark;
+}
+element normal.normal, element alternate.normal {
+  text-color: @fg-dark;
+}
+element normal.active, element alternate.active {
+  text-color: @fg-active;
+}
+element normal.urgent, element alternate.urgent {
+  text-color: @fg-urgent;
+}
+
+element selected.normal,
+element selected.active,
+element selected.urgent {
+  background-color: @bg-light;
+}
+element selected.normal {
+  text-color: @fg-light;
+}
+element selected.active {
+  text-color: @fg-active;
+}
+element selected.urgent {
+  text-color: @fg-urgent;
+}
+
+element-icon {
+  size: 20px;
+  margin: 0 8px 0 0;
+  background-color: inherit;
+}
+element-text {
+  padding: 4px 0 0 0;
+  background-color: inherit;
+  text-color: inherit;
+}
+
+scrollbar {
+  width: 4px;
+  padding: 0;
+  margin: 0 0 0 4px;
+  handle-width: 4px;
+  border: 0;
+  handle-color: @bg-light;
+}
+mode-switcher {
+  margin: 0;
+  border: 0;
+}
+button {
+  padding: 4px;
+  spacing: 0;
+  text-color: @fg-dark;
+}
+button selected {
+  background-color: @bg-light;
+  text-color: @fg-light;
+}
+inputbar {
+  padding: 0;
+  spacing: 0;
+  text-color: @fg-dark;
+  children: [ entry,overlay,case-indicator ];
+}
+case-indicator {
+  spacing: 0;
+  text-color: @fg-dark;
+}
+entry {
+  spacing: 0;
+  text-color: @fg-normal;
+}
+prompt {
+  spacing: 0;
+  text-color: @fg-dark;
+}
+textbox-prompt-colon {
+  margin: 0px 4px 0 0;
+  expand: false;
+  str: ":";
+  text-color: inherit;
+}
+error-message {
+  background-color: rgba(0, 0, 0, 0%);
+  text-color: @fg-dark;
+}
