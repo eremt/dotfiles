@@ -1,1 +1,3 @@
 test -r $HOME/.local/bin && PATH="$PATH:$HOME/.local/bin"
+
+test -r $HOME/.npm-packages/bin && PATH="$PATH:$HOME/.npm-packages/bin"
