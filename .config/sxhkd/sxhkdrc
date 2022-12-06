@@ -1,6 +1,17 @@
 super + p
   rofi -show drun -show-icons
 
+super + i
+  alacritty \
+  -t="Scratchpad" \
+  --config-file=$HOME/.config/alacritty/scratchpad.yml
+
+super + o
+  alacritty \
+  -t="Scratchpad" \
+  --config-file=$HOME/.config/alacritty/scratchpad.yml \
+  -e ranger
+
 XF86AudioRaiseVolume
   amixer set Master 5%+
 XF86AudioLowerVolume

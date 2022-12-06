@@ -1,0 +1,14 @@
+# Scratchpad config
+# - floating
+
+window:
+  dimensions:
+    columns: 80
+    lines: 25
+
+  # Allow terminal applications to change Alacritty's window title.
+  dynamic_title: true
+
+colors:
+  primary:
+    background: '#191919'
