@@ -1,6 +1,6 @@
 #!/bin/bash
 # TODO
-# - handle packages not in debian repositories (firefox, alacritty)
+# - prompt postinstall steps
 
 #
 # CONFIG
@@ -9,6 +9,18 @@ GIT_DOTFILES=https://github.com/eremt/dotfiles
 
 #
 # PRE INSTALL
+OS="default"
+get_os () {
+  uname_out=$(uname -a)
+
+  # differences in package repositories are best handled with $PACKAGE_MANAGER
+  # $OS is only used when $PACKAGE_MANAGER isn't enough like firefox-esr for debian
+  if [[ $uname_out == *"Debian"* ]]; then
+    OS="debian"
+  fi
+}
+get_os
+
 PACKAGE_MANAGER=""
 cmd_package_manager=""
 get_package_manager () {
@@ -28,11 +40,11 @@ get_package_manager
 cmd_install_packages () {
   eval sudo "$cmd_package_manager $*"
 }
-packages_selected=()
+PACKAGES_SELECTED=()
 prompt_install_packages () {
   for p in "$@"; do
     if prompt_Yn "Install $p?"; then
-      packages_selected+=("$p")
+      PACKAGES_SELECTED+=("$p")
     fi
   done
 }
@@ -56,51 +68,36 @@ prompt_yN () {
 
 #
 # PACKAGES
-packages_deps=(
-  "git"
-)
-packages_core=(
-  "zsh"
-  "curl"
-  "wget"
-  "alacritty"
-  "sxhkd"
-  "rofi"
-)
-packages_editors=(
-  "vim"
-  "neovim"
-)
-packages_www=(
-  "firefox"
-  "chromium"
-)
-packages_misc=(
-  "libreoffice"
-  "gimp"
-  "inkscape"
-)
+PACKAGES_DEP=("git")
 
-#
-# FONTS
-packages_fonts_apt=(
-  "font-awesome"
-  "fonts-ubuntu"
-  "fonts-jetbrains-mono"
-)
-packages_fonts_pacman=(
-  "ttf-font-awesome"
-  "ttf-ubuntu-font-family"
-  "ttf-jetbrains-mono"
-)
+PACKAGES_CORE=("zsh" "curl" "wget" "sxhkd" "rofi")
+if [ "$OS" != "debian" ]; then
+  # Debian repositories doesn't have alacritty
+  # Build from source: https://github.com/alacritty/alacritty/blob/master/INSTALL.md#debianubuntu
+  PACKAGES_CORE+=("alacritty")
+fi
+
+PACKAGES_EDITORS=("vim" "neovim")
+
+FIREFOX="firefox"
+if [ "$OS" = "debian" ]; then
+  # Debian repositories only has firefox-esr
+  FIREFOX="firefox-esr"
+fi
+PACKAGES_WWW=("$FIREFOX" "chromium")
+
+PACKAGES_FONTS=()
+if [ "$PACKAGE_MANAGER" = "apt" ]; then
+  PACKAGES_FONTS=("fonts-font-awesome" "fonts-ubuntu")
+elif [ "$PACKAGE_MANAGER" = "pacman" ]; then
+  PACKAGES_FONTS=("ttf-font-awesome" "ttf-ubuntu-font-family")
+fi
 
 #
 # INSTALL
 #
 # 1 - Install dependencies
-if prompt_Yn "Install dependencies (${packages_deps[*]})?"; then
-  cmd_install_packages "${packages_deps[@]}"
-fi
+prompt_Yn "Install dependencies (${PACKAGES_DEP[*]})?" && cmd_install_packages "${PACKAGES_DEP[@]}"
 #
 # 2 - Clone and checkout $GIT_DOTFILES
 if prompt_Yn "Clone $GIT_DOTFILES?"; then
@@ -112,25 +109,19 @@ if prompt_Yn "Clone $GIT_DOTFILES?"; then
 fi
 #
 # 3 - Prompt install for rest of packages
-if prompt_Yn "Select core packages (${packages_core[*]})?"; then
-  prompt_install_packages "${packages_core[@]}"
-fi
-if prompt_Yn "Select editors (${packages_editors[*]})?"; then
-  prompt_install_packages "${packages_editors[@]}"
-fi
-if prompt_Yn "Select browsers (${packages_www[*]})?"; then
-  prompt_install_packages "${packages_www[@]}"
-fi
-if prompt_Yn "Select miscellaneous (${packages_misc[*]})?"; then
-  prompt_install_packages "${packages_misc[@]}"
-fi
+prompt_Yn "Select core packages?" && prompt_install_packages "${PACKAGES_CORE[@]}"
+prompt_Yn "Select editor(s)?" && prompt_install_packages "${PACKAGES_EDITORS[@]}"
+prompt_Yn "Select browser(s)?" && prompt_install_packages "${PACKAGES_WWW[@]}"
+prompt_Yn "Install fonts?" && PACKAGES_SELECTED+=("${PACKAGES_FONTS[@]}")
 #
 # 4 - Prompt confirmation and install selected
-echo "Selected: ${packages_selected[*]}"
-if prompt_yN "Confirm install?"; then
-  cmd_install_packages "${packages_selected[*]}"
-fi
+echo -e "\nSelected packages:"
+for package in "${PACKAGES_SELECTED[@]}"; do
+  echo " - $package"
+done
 
+echo -e "\n$ $cmd_package_manager ${PACKAGES_SELECTED[*]}\n"
+prompt_yN "Run install?" && cmd_install_packages "${PACKAGES_SELECTED[*]}" || echo "Skip install."
 #
 # POST INSTALL
 # - clone packages_editor plugins and themes
