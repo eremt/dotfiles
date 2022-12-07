@@ -1,0 +1,20 @@
+{
+  "UrlKeyedAnonymizedDataCollectionEnabled": false,
+  "DnsOverHttpsMode": "secure",
+  "DnsOverHttpsTemplates": "https://dns.quad9.net/dns-query",
+  "HttpsOnlyMode": "force_enabled",
+  "PasswordManagerEnabled": false,
+  "BlockThirdPartyCookies": true,
+  "ImportAutofillFormData": false,
+  "DefaultPopupsSetting": 2,
+
+  "DefaultSearchProviderEnabled": true,
+  "DefaultSearchProviderSearchURL": "https://duckduckgo.com/?q={searchTerms}",
+  "DefaultSearchProviderName": "DuckDuckGo",
+
+  "ExtensionInstallForcelist": [
+    "cjpalhdlnbpafiamejdnhcphjbkeiagm",
+    "dbepggeogbaibhgnhhndojpepiihcmeb",
+    "gcbommkclmclpchllfjekcdonpmejbdp"
+  ]
+}
