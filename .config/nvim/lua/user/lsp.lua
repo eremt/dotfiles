@@ -4,12 +4,13 @@
 -- - nvim-lspconfig: https://github.com/neovim/nvim-lspconfig
 --
 -- Servers:
--- - Bash:       npm i -g bash-language-server
--- - TypeScript: npm i -g typescript typescript-language-server
--- - Python:     npm i -g pyright
+-- - Bash:        npm install -g bash-language-server
+-- - TypeScript:  npm install -g typescript typescript-language-server
+-- - Python:      npm install -g pyright
+-- - Go:          go install golang.org/x/tools/gopls@latest
 
 local lspconfig = require('lspconfig')
-local servers = { 'bashls', 'tsserver', 'pyright' }
+local servers = { 'bashls', 'tsserver', 'pyright', 'gopls' }
 
 local opts = { noremap=true, silent=true }
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
