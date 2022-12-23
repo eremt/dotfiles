@@ -1,11 +1,18 @@
-# syntax highlighting
+" syntax highlighting
 syntax on
 colorscheme boring
 
-# indentation
+" indentation
 set tabstop=2
 set shiftwidth=2
 set expandtab
 
-# disable swapfile
+" disable swapfile
 set noswapfile
+
+" disable yank when pasting in visual mode
+vnoremap p "_dP
+
+" FZF
+set rtp+=~/.vim/pack/plugins/start/fzf
+:noremap <c-p> :FZF<CR>

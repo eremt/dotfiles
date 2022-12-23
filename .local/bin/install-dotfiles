@@ -129,6 +129,7 @@ prompt_yN "Run install?" && cmd_install_packages "${PACKAGES_SELECTED[*]}" || ec
 
 # Vim/Neovim
 plugins_vim=(
+  "https://github.com/junegunn/fzf.vim"
   "https://github.com/mattn/emmet-vim"
 )
 themes_vim=(
