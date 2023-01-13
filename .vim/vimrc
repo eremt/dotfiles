@@ -10,6 +10,14 @@ set expandtab
 " disable swapfile
 set noswapfile
 
+" set leader to <space>
+let mapleader=" "
+" enter command mode
+noremap <leader>; :
+" search replace
+nnoremap <leader>/ yiw:%s/<C-r>"/
+vnoremap <leader>/ y:%s/<C-r>"/
+
 " disable yank when pasting in visual mode
 vnoremap p "_dP
 

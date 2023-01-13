@@ -70,7 +70,7 @@ prompt_yN () {
 # PACKAGES
 PACKAGES_DEP=("git")
 
-PACKAGES_CORE=("zsh" "curl" "wget" "sxhkd" "rofi" "redshift")
+PACKAGES_CORE=("zsh" "curl" "wget" "sxhkd" "fzf" "rofi" "redshift")
 if [ "$OS" != "debian" ]; then
   # Debian repositories doesn't have alacritty
   # Build from source: https://github.com/alacritty/alacritty/blob/master/INSTALL.md#debianubuntu
