@@ -1,5 +1,5 @@
-# Scratchpad config
-# - floating
+import:
+  - ~/.config/alacritty/alacritty.yml
 
 window:
   dimensions:
