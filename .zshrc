@@ -15,6 +15,7 @@ SAVEHIST=1000
 bindkey -v
 
 # completions
-zstyle :compinstall filename '/home/user/.zshrc'
+zstyle ':completion:*' completer _complete _ignored _approximate
+zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]} r:|[._-]=* r:|=*'
 autoload -Uz compinit
 compinit
