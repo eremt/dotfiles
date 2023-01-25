@@ -7,6 +7,9 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 
+" center cursor vertically
+set scrolloff=25
+
 " disable swapfile
 set noswapfile
 
@@ -14,9 +17,13 @@ set noswapfile
 let mapleader=" "
 " enter command mode
 noremap <leader>; :
-" search replace
-nnoremap <leader>/ yiw:%s/<C-r>"/
-vnoremap <leader>/ y:%s/<C-r>"/
+" search replace inner word or visual selection
+nnoremap <leader>/ yiw:%s/<C-r>"/<C-r>"
+vnoremap <leader>/ y:%s/<C-r>"/<C-r>"
+
+" resize vertical splits
+map <leader>= :exe "vertical resize +10"<CR>
+map <leader>- :exe "vertical resize -10"<CR>
 
 " disable yank when pasting in visual mode
 vnoremap p "_dP
