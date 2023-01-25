@@ -16,4 +16,5 @@ font:
     family: Ubuntu Mono
 
 key_bindings:
+  - { key: Escape, mods: Control, mode: ~Search, action: ToggleViMode }
   - { key: Return, mods: Shift|Control, action: SpawnNewInstance }
