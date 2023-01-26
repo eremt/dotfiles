@@ -12,3 +12,4 @@
   dfs = diff --staged
   dt = difftool -t nvimdiff --no-prompt
   mt = mergetool -t nvimdiff --no-prompt
+  lg = log --pretty='format:%Cblue%h%Creset: %aN %Cgreen%d%Creset%n  %s%n'
