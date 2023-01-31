@@ -15,6 +15,11 @@ vim.opt.swapfile = false
 
 -- set leader to <space>
 vim.g.mapleader = " "
+
+-- switch between windows and tabs
+vim.keymap.set('n', '<leader><Tab>', 'g<Tab>', { noremap = true })
+vim.keymap.set('n', '<leader>w', '<C-w><C-w>', { noremap = true })
+
 -- enter command mode
 vim.keymap.set('', '<leader>;', ':', { noremap = true })
 -- search replace inner word or visual selection

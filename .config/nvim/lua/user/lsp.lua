@@ -38,7 +38,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
 
   -- formatting
-  vim.keymap.set('n', '<space><Tab>', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', '<Tab>', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
   vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
 end

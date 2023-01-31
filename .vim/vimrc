@@ -15,6 +15,11 @@ set noswapfile
 
 " set leader to <space>
 let mapleader=" "
+
+" switch between windows and tabs
+nnoremap <leader><Tab> g<Tab>
+nnoremap <leader>w <C-w><C-w>
+
 " enter command mode
 noremap <leader>; :
 " search replace inner word or visual selection
