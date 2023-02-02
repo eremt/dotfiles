@@ -1,7 +1,28 @@
-alias dotfiles="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
+alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
+alias dots='dotfiles'
 
-alias ls="ls --color=auto"
-alias ll="ls -lh"
-alias la="ls -lAh"
+# jumping around
+alias cd-='cd -'
+alias cd.='cd ..'
+alias cdc='cd ~/.config'
+alias cdb='cd ~/.local/bin'
+alias cdd='cd ~/dev'
+alias cddl='cd ~/Downloads'
 
-alias vi="nvim"
+# ls, grep and tree utils and colors
+alias ls='ls --color=auto'
+alias ll='ls -lh'
+alias la='ls -lAh'
+alias grep='grep --color=auto'
+alias tree='tree -C'
+
+# create files and directories
+alias mkf='touch'
+alias mkd='mkdir -p'
+# find files and directories
+alias ff='find ./* -type f -name'
+alias fd='find ./* -type d -name'
+
+alias vi='nvim'
+alias v='vi'
+alias mutt='neomutt'

@@ -1,6 +1,11 @@
 test -r $HOME/.local/bin && PATH="$PATH:$HOME/.local/bin"
 
+# Node
 test -r $HOME/.npm-packages/bin && PATH="$PATH:$HOME/.npm-packages/bin"
 
+# Go
 test -r /usr/local/go/bin && PATH="$PATH:/usr/local/go/bin"
 test -r $HOME/go/bin && PATH="$PATH:$HOME/go/bin"
+
+# Rust
+test -r $HOME/.cargo/bin && PATH="$PATH:$HOME/.cargo/bin"
