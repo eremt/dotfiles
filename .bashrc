@@ -7,10 +7,11 @@ test -r $HOME/.config/shell/common && source $HOME/.config/shell/common
 test -r $HOME/.config/shell/aliases && source $HOME/.config/shell/aliases
 
 # history
+HISTFILE=~/.histfile
 HISTSIZE=1000
 HISTFILESIZE=1000
-# HISTCONTROL=ignoreboth # no duplicates or lines starting with space
-# shopt -s histappend # append to history, dont overwrite
+# no duplicates or lines starting with space
+HISTCONTROL=ignoreboth
 
 # vi mode
 set -o vi
