@@ -1,6 +1,6 @@
 " syntax highlighting
 syntax on
-colorscheme boring
+colorscheme vinimal
 
 " indentation
 set tabstop=2

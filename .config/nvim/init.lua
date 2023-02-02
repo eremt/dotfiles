@@ -1,6 +1,6 @@
 -- syntax highlighting
 -- syntax on default
-vim.cmd('colorscheme boring')
+vim.cmd('colorscheme vinimal')
 
 -- indentation
 vim.opt.tabstop = 2

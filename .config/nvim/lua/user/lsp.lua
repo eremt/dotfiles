@@ -8,9 +8,10 @@
 -- - TypeScript:  npm install -g typescript typescript-language-server
 -- - Python:      npm install -g pyright
 -- - Go:          go install golang.org/x/tools/gopls@latest
+-- - Rust:        https://rust-analyzer.github.io/manual.html#rust-analyzer-language-server-binary
 
 local lspconfig = require('lspconfig')
-local servers = { 'bashls', 'tsserver', 'pyright', 'gopls' }
+local servers = { 'bashls', 'tsserver', 'pyright', 'rust_analyzer', 'gopls' }
 
 local opts = { noremap=true, silent=true }
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
