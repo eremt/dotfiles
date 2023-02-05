@@ -1,7 +1,9 @@
 # prompt
 autoload -Uz promptinit
-promptinit
-PROMPT='%F{8}%n%f%F{8}@%m%f:%F{7}%~%f '
+
+fg_faded='%F{240}'
+fg_normal='%F{245}'
+PROMPT="$fg_faded%n@%m:%f$fg_normal%~%f "
 
 test -r $HOME/.config/shell/common && source $HOME/.config/shell/common
 test -r $HOME/.config/shell/aliases && source $HOME/.config/shell/aliases
