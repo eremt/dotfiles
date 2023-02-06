@@ -1,33 +1,22 @@
 super + p
   rofi -show drun -show-icons
 
-super + shift + Escape
-  toggle-kbd
+super + c
+  dunstctl close-all
 
-super + i
-  alacritty \
-  -t="Scratchpad" \
-  --config-file=$HOME/.config/alacritty/scratchpad.yml
-
-super + o
-  alacritty \
-  -t="Scratchpad" \
-  --config-file=$HOME/.config/alacritty/scratchpad.yml \
-  -e ranger
+super + {i,u,o,m}
+  scratchpads {terminal,audio,files,mail}
 
 XF86AudioRaiseVolume
-  pactl set-sink-volume @DEFAULT_SINK@ +5%
-  # amixer set Master 5%+
+  desktop-utilities --volume +5%
 XF86AudioLowerVolume
-  pactl set-sink-volume @DEFAULT_SINK@ -5%
-  # amixer set Master 5%-
+  desktop-utilities --volume -5%
 XF86AudioMute
-  pactl set-sink-mute @DEFAULT_SINK@ toggle
-  # amixer set Master toggle
+  desktop-utilities --volume toggle
 XF86AudioMicMute
   pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 XF86MonBrightnessUp
-  xbacklight -inc 5
+  desktop-utilities --brightness +5
 XF86MonBrightnessDown
-  xbacklight -dec 5
+  desktop-utilities --brightness -5
