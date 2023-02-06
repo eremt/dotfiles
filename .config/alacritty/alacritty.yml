@@ -6,12 +6,26 @@ window:
     x: 4
     y: 4
 
+colors:
+  primary:
+    dim_background: '#121212'
+    background: '#1c1c1c'
+    bright_background: '#262626'
+
+    dim_foreground: '#585858'
+    foreground: '#8a8a8a'
+    bright_foreground: '#a8a8a8'
+
+  cursor:
+    text: '#1c1c1c'
+    cursor: '#8a8a8a'
+
 scrolling:
   history: 10000
   multiplier: 3
 
 font:
-  size: 10.0
+  size: 11.0
   normal:
     family: Ubuntu Mono
 
