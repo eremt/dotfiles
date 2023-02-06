@@ -1,0 +1,143 @@
+set editor="nvim"
+source ./colors
+# source ./accounts/...
+
+set header_cache=~/.cache/neomutt
+set message_cachedir="~/.cache/neomutt"
+unset imap_passive
+set imap_keepalive=300
+set mail_check=10
+
+set sort=threads
+set sort_aux=reverse-date-received
+set mark_old=no
+
+set reverse_name
+set fast_reply
+set include
+set mime_forward=yes
+set nosave_empty
+set delete=yes
+
+set pager_stop
+set pager_index_lines=10
+set markers=no
+
+########################################
+# Keybindings
+########################################
+bind index & limit # use & to filter like less
+# navigation
+bind index h noop
+bind pager,attach h exit
+bind browser h goto-parent
+bind pager j next-undeleted
+bind pager k previous-undeleted
+bind index l display-message
+bind browser l select-entry
+bind index D delete-message
+bind index U undelete-message
+bind index,pager,browser d half-down
+bind index,pager,browser u half-up
+bind index g noop
+bind index gg first-entry
+bind index G last-entry
+bind pager g noop # TODO: turns off group-reply+group-chat-reply
+bind pager gg top
+bind pager G bottom
+bind index,pager ] next-undeleted
+bind index,pager [ previous-undeleted
+bind index,pager } next-thread
+bind index,pager { previous-thread
+
+# mouse wheel, doesn't seem to work?
+bind index,pager \031 previous-line
+bind index,pager \005 next-line
+
+# global index and pager shortcuts
+bind index,pager @ compose-to-sender
+bind index,pager D purge-message
+bind index,pager \Cr sync-mailbox
+
+# inspired by folding in vim
+bind index zf collapse-thread
+bind index zF collapse-all
+bind pager zf toggle-quoted
+
+# Sidebar
+####################
+bind index,pager B sidebar-toggle-visible
+bind index,pager \Ck sidebar-prev
+bind index,pager \Cj sidebar-next
+bind index,pager \Co sidebar-open
+bind index,pager \Cp sidebar-prev-new
+bind index,pager \Cn sidebar-next-new
+
+########################################
+# COLORS
+########################################
+mono bold bold
+mono underline underline
+mono indicator reverse
+mono error bold
+
+color normal $my_fg_normal $my_bg_normal
+color search color255 default
+color indicator $my_fg_bright $my_bg_bright
+color status $my_fg_faded $my_bg_faded
+color prompt $my_fg_bright $my_bg_normal
+color tilde $my_fg_faded $my_bg_normal
+color error $my_red default
+color message $my_fg_normal default
+
+# Index
+####################
+color index $my_fg_faded default '.*'
+color index_author $my_fg_normal default '.*'
+color index_subject $my_fg_normal default '.*'
+# Unread mail N: new and unread, O: old and unread
+# O is disabled with mark_old=no but keeping anyway
+color index_author $my_fg_bright default "~N|~O"
+color index_subject $my_fg_bright default "~N|~O"
+color tree $my_fg_faded default
+
+# Sidebar
+####################
+color sidebar_highlight $my_fg_bright $my_bg_bright
+color sidebar_divider $my_bg_normal $my_bg_faded
+color sidebar_new $my_green default
+
+# Body
+####################
+color quoted $my_fg_faded default
+color body $my_fg_normal $my_bg_faded "\`[^\`]*\`" # `code`
+# TODO: add TLD requirement to email and URL
+color body $my_blue default "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+" # Email addresses
+# URLS break with ;@
+color body $my_blue default "(https?|ftp)://[\-\.,/%~_:?&=\#+a-zA-Z0-9]+" # URL
+color body $my_red default "CVE-[0-9]{4}-[0-9]+" # CVE-YYYY-NNNN...
+# PGP
+color signature $my_green default
+color attachment $my_fg_bright default
+
+# Headers
+####################
+color hdrdefault default default
+color header $my_fg_faded default ".*"
+color header $my_fg_normal default "^(From)"
+color header $my_fg_normal default "^(Subject)"
+color header $my_fg_faded default "^(CC|BCC)"
+
+# Untested, move to # PGP once done
+color body $my_red default "(BAD signature)"
+color body $my_green default "(Good signature)"
+color body $my_red default "^gpg: BAD signature from.*"
+color body $my_green default "^gpg: Good signature .*"
+color body $my_yellow default "^gpg: "
+
+# Unknown, red background to find them
+color sidebar_flagged white red
+color progress white red
+color underline white red
+color bold $my_fg_bright red
+color options $my_fg_normal red

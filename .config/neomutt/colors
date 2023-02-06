@@ -1,0 +1,12 @@
+set my_bg_faded=color233
+set my_bg_normal=color234
+set my_bg_bright=color235
+
+set my_fg_faded=color240
+set my_fg_normal=color245
+set my_fg_bright=color248
+
+set my_red=color9
+set my_yellow=color208
+set my_blue=color111
+set my_green=color2
