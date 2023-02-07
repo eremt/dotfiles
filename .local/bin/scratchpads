@@ -4,8 +4,6 @@
 #
 # TODO:
 # - [ ] movemouse on window start
-# - [ ] pull window to current screen
-# - [ ] hide visibility if focused
 #
 CONFIG_FILE=~/.config/alacritty/scratchpad.yml
 TERM_CMD_ARGS=(
@@ -14,62 +12,74 @@ TERM_CMD_ARGS=(
 )
 TERM_CMD="alacritty ${TERM_CMD_ARGS[*]}"
 
-get_window_id () {
+# store current window to toggle visibility
+# if it's the same as search
+current_window_id=$(xdotool getwindowfocus)
+
+get_window () {
   local title=$1
   xdotool search --name "$title"
 }
 
-set_window_focus () {
+toggle_window () {
   local title=$1
-  window_id=$(get_window_id "$title")
+  window_id=$(get_window "$title")
   # Grep output: Geometry 500x300 | 500x300
   window_size=$(xdotool getwindowgeometry "$window_id" | grep 'Geometry' | grep -Eo '[0-9]+x[0-9]+')
   # cut on 'x' and divide by 2 to get center
+  # TODO: this seems to trigger an error on window close
+  # It's handled safely by xdotool but investigate anyway
   mouse_x=$(($(echo "$window_size" | cut -d 'x' -f1) / 2))
   mouse_y=$(($(echo "$window_size" | cut -d 'x' -f2) / 2))
 
-  xdotool windowactivate "$window_id" mousemove --window "$window_id" "$mouse_x" "$mouse_y"
+  # toggle visibility
+  if [ "$window_id" == "$current_window_id" ]; then
+    xdotool windowunmap "$window_id"
+  else
+    xdotool windowmap "$window_id"
+    xdotool windowactivate "$window_id" mousemove --window "$window_id" "$mouse_x" "$mouse_y"
+  fi
 }
 
 scratchpad_terminal () {
-  local title='scratchpad'
-  if ! get_window_id "$title"; then
+  local title='sp-scratchpad'
+  if ! get_window "$title"; then
     $TERM_CMD \
       -t "$title"
   fi
-  set_window_focus "$title"
+  toggle_window "$title"
 }
 
 scratchpad_volume () {
-  local title='pulsemixer'
-  if ! get_window_id "$title"; then
+  local title='sp-pulsemixer'
+  if ! get_window "$title"; then
     $TERM_CMD \
       -t "$title" \
       -e 'pulsemixer'
   fi
-  set_window_focus "$title"
+  toggle_window "$title"
 }
 
 scratchpad_filemanager () {
-  local title='ranger'
-  if ! get_window_id "$title"; then
+  local title='sp-ranger'
+  if ! get_window "$title"; then
     $TERM_CMD \
       -t "$title" \
       -e 'ranger'
   fi
-  set_window_focus "$title"
+  toggle_window "$title"
 }
 
 scratchpad_mail () {
-  local title='neomutt'
-  if ! get_window_id "$title"; then
+  local title='sp-neomutt'
+  if ! get_window "$title"; then
     $TERM_CMD \
       -t "$title" \
-      -o "window.dimensions.columns=140" \
-      -o "window.dimensions.lines=40" \
+      -o "window.dimensions.columns=160" \
+      -o "window.dimensions.lines=50" \
       -e 'neomutt'
   fi
-  set_window_focus "$title"
+  toggle_window "$title"
 }
 
 case $1 in
