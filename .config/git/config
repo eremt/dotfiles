@@ -10,6 +10,12 @@
   cob = checkout -b
   df = diff
   dfs = diff --staged
-  dt = difftool -t nvimdiff --no-prompt
-  mt = mergetool -t nvimdiff --no-prompt
+  dt = difftool -t nvimdiff
+  mt = mergetool -t nvimdiff
+  dts = dt --staged
   lg = log --pretty='format:%Cblue%h%Creset: %aN %Cgreen%d%Creset%n  %s%n'
+
+[difftool]
+  prompt = false
+[difftool "nvimdiff"]
+  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
