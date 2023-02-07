@@ -12,7 +12,7 @@ colors:
     background: '#1c1c1c'
     bright_background: '#262626'
 
-    dim_foreground: '#585858'
+    dim_foreground: '#626262'
     foreground: '#8a8a8a'
     bright_foreground: '#a8a8a8'
 

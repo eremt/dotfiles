@@ -1,7 +1,7 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-fg_faded='\e[38;5;240m\]'
+fg_faded='\e[38;5;241m\]'
 fg_normal='\e[38;5;245m\]'
 PS1="$fg_faded\u@\h:$fg_normal\w "
 

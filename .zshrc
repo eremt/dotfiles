@@ -1,7 +1,7 @@
 # prompt
 autoload -Uz promptinit
 
-fg_faded='%F{240}'
+fg_faded='%F{241}'
 fg_normal='%F{245}'
 PROMPT="$fg_faded%n@%m:%f$fg_normal%~%f "
 

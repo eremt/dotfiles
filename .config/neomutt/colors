@@ -2,7 +2,7 @@ set my_bg_faded=color233
 set my_bg_normal=color234
 set my_bg_bright=color235
 
-set my_fg_faded=color240
+set my_fg_faded=color241
 set my_fg_normal=color245
 set my_fg_bright=color248
 
