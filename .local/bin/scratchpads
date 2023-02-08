@@ -3,14 +3,33 @@
 # Simple scratchpads with xdotool and alacritty
 #
 # TODO:
-# - [ ] movemouse on window start
+# - movemouse on window start
 #
 CONFIG_FILE=~/.config/alacritty/scratchpad.yml
-TERM_CMD_ARGS=(
-  "--config-file=$CONFIG_FILE"
-  "--working-directory=$HOME"
-)
-TERM_CMD="alacritty ${TERM_CMD_ARGS[*]}"
+
+# $1: command
+# $2: extra options for alacritty
+term_cmd () {
+  local cmd_exec=$1
+  local title="sp-${cmd_exec:-scratchpad}"
+  shift
+
+  # set title and optional extra arguments
+  local term_args=(-t "$title" "$@")
+  if [ -n "$cmd_exec" ]; then
+    # -e has to come last, see ALACRITTY(1)
+    term_args+=(-e "$cmd_exec")
+  fi
+
+  if ! get_window "$title"; then
+    alacritty \
+      --config-file="$CONFIG_FILE" \
+      --working-directory"=$HOME" \
+      "${term_args[@]}"
+  fi
+
+  toggle_window "$title"
+}
 
 # store current window to toggle visibility
 # if it's the same as search
@@ -24,67 +43,37 @@ get_window () {
 toggle_window () {
   local title=$1
   window_id=$(get_window "$title")
+  if [ -z "$window_id" ]; then
+    echo "Couldn't get window id, abort"
+    exit 1
+  fi
   # Grep output: Geometry 500x300 | 500x300
   window_size=$(xdotool getwindowgeometry "$window_id" | grep 'Geometry' | grep -Eo '[0-9]+x[0-9]+')
-  # cut on 'x' and divide by 2 to get center
-  # TODO: this seems to trigger an error on window close
-  # It's handled safely by xdotool but investigate anyway
+  # cut on 'x' and divide by 2 to get window center
   mouse_x=$(($(echo "$window_size" | cut -d 'x' -f1) / 2))
   mouse_y=$(($(echo "$window_size" | cut -d 'x' -f2) / 2))
 
   # toggle visibility
   if [ "$window_id" == "$current_window_id" ]; then
+    # hide window
     xdotool windowunmap "$window_id"
   else
-    xdotool windowmap "$window_id"
-    xdotool windowactivate "$window_id" mousemove --window "$window_id" "$mouse_x" "$mouse_y"
+    # show window and center mouse
+    xdotool windowmap --sync "$window_id" \
+            windowactivate "$window_id" \
+            mousemove --window "$window_id" "$mouse_x" "$mouse_y"
   fi
-}
-
-scratchpad_terminal () {
-  local title='sp-scratchpad'
-  if ! get_window "$title"; then
-    $TERM_CMD \
-      -t "$title"
-  fi
-  toggle_window "$title"
-}
-
-scratchpad_volume () {
-  local title='sp-pulsemixer'
-  if ! get_window "$title"; then
-    $TERM_CMD \
-      -t "$title" \
-      -e 'pulsemixer'
-  fi
-  toggle_window "$title"
-}
-
-scratchpad_filemanager () {
-  local title='sp-ranger'
-  if ! get_window "$title"; then
-    $TERM_CMD \
-      -t "$title" \
-      -e 'ranger'
-  fi
-  toggle_window "$title"
 }
 
 scratchpad_mail () {
-  local title='sp-neomutt'
-  if ! get_window "$title"; then
-    $TERM_CMD \
-      -t "$title" \
-      -o "window.dimensions.columns=160" \
-      -o "window.dimensions.lines=50" \
-      -e 'neomutt'
-  fi
-  toggle_window "$title"
+  term_cmd 'neomutt' \
+    -o 'window.dimensions.columns=160' \
+    -o 'window.dimensions.lines=50'
 }
 
 case $1 in
-  terminal) scratchpad_terminal;;
-  audio)    scratchpad_volume;;
-  files)    scratchpad_filemanager;;
+  terminal) term_cmd;;
+  audio)    term_cmd 'pulsemixer';;
+  files)    term_cmd 'ranger';;
   mail)     scratchpad_mail;;
 esac
