@@ -70,10 +70,16 @@ scratchpad_mail () {
     -o 'window.dimensions.columns=160' \
     -o 'window.dimensions.lines=50'
 }
+scratchpad_news () {
+  term_cmd 'newsboat' \
+    -o 'window.dimensions.columns=160' \
+    -o 'window.dimensions.lines=50'
+}
 
 case $1 in
   terminal) term_cmd;;
   audio)    term_cmd 'pulsemixer';;
   files)    term_cmd 'ranger';;
   mail)     scratchpad_mail;;
+  news)     scratchpad_news;;
 esac

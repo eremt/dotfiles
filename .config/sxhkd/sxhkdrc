@@ -4,8 +4,8 @@ super + p
 super + c
   dunstctl close-all
 
-super + {i,u,o,m}
-  scratchpads {terminal,audio,files,mail}
+super + {i,u,o,m,n}
+  scratchpads {terminal,audio,files,mail,news}
 
 XF86AudioRaiseVolume
   desktop-utilities --volume +5%
