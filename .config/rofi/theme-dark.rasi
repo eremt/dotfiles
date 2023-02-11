@@ -3,13 +3,13 @@
  *
 **/
 * {
-  bg-dark:   #111;
-  bg-normal: #151515;
-  bg-light:  #222;
+  bg-dark:   #121212;
+  bg-normal: #1c1c1c;
+  bg-light:  #262626;
 
-  fg-dark:   #888;
-  fg-normal: #bbb;
-  fg-light:  #eee;
+  fg-dark:   #626262;
+  fg-normal: #808080;
+  fg-light:  #a8a8a8;
 
   fg-active: #268bd2;
   fg-urgent: #dc322f;
@@ -17,7 +17,7 @@
   background-color: @bg-dark;
 }
 window {
-  padding: 8px;
+  padding: 0;
   background-color: @bg-dark;
   border: 1;
   border-color: @bg-light;
@@ -86,10 +86,10 @@ element-text {
 }
 
 scrollbar {
-  width: 4px;
+  width: 0;
   padding: 0;
-  margin: 0 0 0 4px;
-  handle-width: 4px;
+  margin: 0;
+  handle-width: 0;
   border: 0;
   handle-color: @bg-light;
 }
@@ -107,9 +107,9 @@ button selected {
   text-color: @fg-light;
 }
 inputbar {
-  padding: 0;
+  padding: 8px;
   spacing: 0;
-  text-color: @fg-dark;
+  text-color: @fg-normal;
   children: [ entry,overlay,case-indicator ];
 }
 case-indicator {
