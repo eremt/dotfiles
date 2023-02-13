@@ -1,0 +1,24 @@
+color background           color245   color234
+color listnormal           color245   color234
+color listnormal_unread    color248   color234
+color listfocus            color245   color235
+color listfocus_unread     color248   color235
+color info                 color245   color236
+color article              color245   default
+color end-of-text-marker   color241   default
+
+# requires 2.25, debian testing is on 2.21
+# color title                color241   color233
+# color hint-key             color241   color233
+# color hint-keys-delimiter  color241   color233
+# color hint-separator       color241   color233
+# color hint-description     color241   color233
+
+search-highlight-colors color255 default
+
+# highlights
+highlight article "^(Feed|Author|Date|Link):.*$" color241 default
+highlight article "https?://[^ ]+"               color111 default
+highlight article "\\[[0-9]+\\]"                 color111 default
+highlight article "\\[image\\ [0-9]+\\]"         color111 default
+highlight article "CVE-[0-9]{4}-[0-9]+"          color9   default
