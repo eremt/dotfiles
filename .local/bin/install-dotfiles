@@ -70,14 +70,10 @@ prompt_yN () {
 # PACKAGES
 PACKAGES_DEP=("git")
 
-PACKAGES_CORE=("zsh" "curl" "wget" "sxhkd" "fzf" "rofi" "redshift")
-if [ "$OS" != "debian" ]; then
-  # Debian repositories doesn't have alacritty
-  # Build from source: https://github.com/alacritty/alacritty/blob/master/INSTALL.md#debianubuntu
-  PACKAGES_CORE+=("alacritty")
-fi
-
+PACKAGES_CORE=("zsh" "wget" "curl" "fzf")
+PACKAGES_DESKTOP=("sxhkd" "alacritty" "dunst" "inotify-tools" "rofi" "redshift")
 PACKAGES_EDITORS=("vim" "neovim")
+PACKAGES_EMAIL_RSS=("neomutt" "newsboat" "urlview")
 
 FIREFOX="firefox"
 if [ "$OS" = "debian" ]; then
@@ -110,7 +106,9 @@ fi
 #
 # 3 - Prompt install for rest of packages
 prompt_Yn "Select core packages?" && prompt_install_packages "${PACKAGES_CORE[@]}"
+prompt_Yn "Select desktop packages?" && prompt_install_packages "${PACKAGES_DESKTOP[@]}"
 prompt_Yn "Select editor(s)?" && prompt_install_packages "${PACKAGES_EDITORS[@]}"
+prompt_Yn "Select e-mail and RSS tools?" && prompt_install_packages "${PACKAGES_EMAIL_RSS[@]}"
 prompt_Yn "Select browser(s)?" && prompt_install_packages "${PACKAGES_WWW[@]}"
 prompt_Yn "Install fonts?" && PACKAGES_SELECTED+=("${PACKAGES_FONTS[@]}")
 #
@@ -141,7 +139,7 @@ plugins_nvim=(
   "https://github.com/neovim/nvim-lspconfig"
 )
 DIR_ROOT_VIM=$HOME/.vim/pack
-DIR_ROOT_NVIM=$HOME/.local/share/nvim/site/pack
+DIR_ROOT_NVIM=$HOME/.config/nvim/pack
 DIR_THEMES_VIM=themes/start
 DIR_PLUGINS_VIM=plugins/start
 postinstall_vi () {
