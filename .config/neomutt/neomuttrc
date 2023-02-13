@@ -20,8 +20,9 @@ set nosave_empty
 set delete=yes
 
 set pager_stop
-set pager_index_lines=10
+set pager_index_lines=5
 set markers=no
+set help=no
 
 ########################################
 # Keybindings
@@ -50,6 +51,9 @@ bind index,pager [ previous-undeleted
 bind index,pager } next-thread
 bind index,pager { previous-thread
 
+# TODO: turns off bounce
+macro index,pager b |urlview\n
+
 # mouse wheel, doesn't seem to work?
 bind index,pager \031 previous-line
 bind index,pager \005 next-line
@@ -66,7 +70,7 @@ bind pager zf toggle-quoted
 
 # Sidebar
 ####################
-bind index,pager B sidebar-toggle-visible
+bind index,pager \Cb sidebar-toggle-visible
 bind index,pager \Ck sidebar-prev
 bind index,pager \Cj sidebar-next
 bind index,pager \Co sidebar-open
@@ -83,12 +87,13 @@ mono error bold
 
 color normal $my_fg_normal $my_bg_normal
 color search color255 default
-color indicator $my_fg_bright $my_bg_bright
+color indicator default $my_bg_bright
 color status $my_fg_faded $my_bg_faded
 color prompt $my_fg_bright $my_bg_normal
 color tilde $my_fg_faded $my_bg_normal
 color error $my_red default
 color message $my_fg_normal default
+color underline default default
 
 # Index
 ####################
@@ -103,7 +108,7 @@ color tree $my_fg_faded default
 
 # Sidebar
 ####################
-color sidebar_highlight $my_fg_bright $my_bg_bright
+color sidebar_highlight default $my_bg_bright
 color sidebar_divider $my_bg_normal $my_bg_faded
 color sidebar_new $my_green default
 
@@ -122,11 +127,8 @@ color attachment $my_fg_bright default
 
 # Headers
 ####################
-color hdrdefault default default
-color header $my_fg_faded default ".*"
-color header $my_fg_normal default "^(From)"
-color header $my_fg_normal default "^(Subject)"
-color header $my_fg_faded default "^(CC|BCC)"
+color hdrdefault $my_fg_faded default
+color header $my_fg_normal default "^(From|To|Subject)"
 
 # Untested, move to # PGP once done
 color body $my_red default "(BAD signature)"
@@ -138,6 +140,5 @@ color body $my_yellow default "^gpg: "
 # Unknown, red background to find them
 color sidebar_flagged white red
 color progress white red
-color underline white red
 color bold $my_fg_bright red
 color options $my_fg_normal red
