@@ -2,7 +2,7 @@ configuration {
   modi: "drun,window,ssh";
   yoffset: -270; // 25% of 1080
 
-  font: "Jetbrains Mono 12";
+  font: "Noto Mono 12";
 
   ssh-command: "alacritty -e {ssh-client} {host} [-p {port}]";
 
