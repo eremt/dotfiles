@@ -1,53 +1,15 @@
 #!/bin/bash
-# TODO
-# - prompt postinstall steps
-
 #
-# CONFIG
-DIR_DOTFILES=$HOME/.dotfiles
-GIT_DOTFILES=https://github.com/eremt/dotfiles
-
+# install-dotfiles
+# this script installs my dotfiles and packages
 #
-# PRE INSTALL
-OS="default"
-get_os () {
-  uname_out=$(uname -a)
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+DIR_DOTFILES=$XDG_CONFIG_HOME/.dotfiles
+GIT_DOTFILES='https://github.com/eremt/dotfiles'
 
-  # differences in package repositories are best handled with $PACKAGE_MANAGER
-  # $OS is only used when $PACKAGE_MANAGER isn't enough like firefox-esr for debian
-  if [[ $uname_out == *"Debian"* ]]; then
-    OS="debian"
-  fi
-}
-get_os
-
-PACKAGE_MANAGER=""
-cmd_package_manager=""
-get_package_manager () {
-  if command -v apt &> /dev/null; then
-    PACKAGE_MANAGER="apt"
-    cmd_package_manager="$PACKAGE_MANAGER install"
-  elif command -v pacman &> /dev/null; then
-    PACKAGE_MANAGER="pacman"
-    cmd_package_manager="$PACKAGE_MANAGER -S"
-  else
-    echo "Couldn't get package manager, aborting."
-    exit 1
-  fi
-}
-get_package_manager
-
-cmd_install_packages () {
-  eval sudo "$cmd_package_manager $*"
-}
-PACKAGES_SELECTED=()
-prompt_install_packages () {
-  for p in "$@"; do
-    if prompt_Yn "Install $p?"; then
-      PACKAGES_SELECTED+=("$p")
-    fi
-  done
-}
+###################################
+# Utils
+###################################
 
 prompt_Yn () {
   read -rp "$* [Y/n]" yn
@@ -65,127 +27,246 @@ prompt_yN () {
     return 1
   fi
 }
+list_packages () {
+  local packages=$*
+  for p in $packages; do
+    echo "  $p"
+  done
+}
+print_section () {
+  echo -e "\n--- $* ---\n"
+}
+add_packages () {
+  local packages=$*
+  for p in $packages; do
+    packages_selected+=("$p")
+  done
+}
+prompt_install_package () {
+  local package=$1
+  if prompt_Yn "  $package?"; then
+    packages_selected+=("$package")
+  fi
+}
+prompt_install_packages () {
+  local packages=$*
+  echo "Packages:"
+  list_packages "$packages"
+  echo
+  echo "0) All packages"
+  echo "1) Skip packages"
+  echo "2) Custom selection"
+  echo
 
-#
-# PACKAGES
-PACKAGES_DEP=("git")
+  read -rp "Select an option (default=0):" answer
+  case $answer in
+    # default, add all packages
+    0|'') add_packages "${packages[@]}";;
+    1) echo "Skipping packages.";;
+    2)
+      echo "Select:"
+      for p in $packages; do
+        prompt_install_package "$p"
+      done
+    ;;
+  esac
+}
+# Clone a list of repositories to a destination directory
+# usage: clone_repositories [destination] [repositores...]
+clone_repositories () {
+  local destination=$1
+  shift
+  local repositories=$*
+  for repo in $repositories; do
+    name=$(basename "$repo")
+    git clone "$repo" "$destination/$name"
+  done
+}
 
-PACKAGES_CORE=("zsh" "wget" "curl" "fzf")
-LIBNOTIFY="libnotify"
-if [ "$OS" = "debian" ]; then
-  LIBNOTIFY="libnotify-bin"
-fi
-PACKAGES_DESKTOP=("sxhkd" "alacritty" "$LIBNOTIFY" "dunst" "inotify-tools" "rofi" "redshift")
-PACKAGES_EDITORS=("vim" "neovim")
-PACKAGES_EMAIL_RSS=("neomutt" "newsboat" "urlview")
+###################################
+# Init
+###################################
 
-FIREFOX="firefox"
-if [ "$OS" = "debian" ]; then
-  # Debian repositories only has firefox-esr
-  FIREFOX="firefox-esr"
-fi
-PACKAGES_WWW=("$FIREFOX" "chromium")
-
-PACKAGES_FONTS=()
-if [ "$PACKAGE_MANAGER" = "apt" ]; then
-  PACKAGES_FONTS=("fonts-font-awesome" "fonts-ubuntu")
-elif [ "$PACKAGE_MANAGER" = "pacman" ]; then
-  PACKAGES_FONTS=("ttf-font-awesome" "ttf-ubuntu-font-family")
-fi
-
-#
-# INSTALL
-#
-# 1 - Install dependencies
-prompt_Yn "Install dependencies (${PACKAGES_DEP[*]})?" && cmd_install_packages "${PACKAGES_DEP[@]}"
-#
-# 2 - Clone and checkout $GIT_DOTFILES
-if prompt_Yn "Clone $GIT_DOTFILES?"; then
-  git clone --bare "$GIT_DOTFILES" "$DIR_DOTFILES"
-  git --git-dir="$DIR_DOTFILES" --work-tree="$HOME" config --local status.showUntrackedFiles no
-  if prompt_Yn "Checkout $GIT_DOTFILES, this will overwrite some files?"; then
-    git --git-dir="$DIR_DOTFILES" --work-tree="$HOME" checkout -f
+os_uname=$(uname -a)
+# not all distributions are covered
+# unless absolutely necessary use $package_manager
+distribution=''
+if [[ $os_uname =~ "Debian" ]]; then
+  distribution='debian'
+  if prompt_Yn "Distribution is Debian, would you like to enable testing?"; then
+    sudo sed -i s/bullseye/testing/g /etc/apt/sources.list
   fi
 fi
-#
-# 3 - Prompt install for rest of packages
-prompt_Yn "Select core packages?" && prompt_install_packages "${PACKAGES_CORE[@]}"
-prompt_Yn "Select desktop packages?" && prompt_install_packages "${PACKAGES_DESKTOP[@]}"
-prompt_Yn "Select editor(s)?" && prompt_install_packages "${PACKAGES_EDITORS[@]}"
-prompt_Yn "Select e-mail and RSS tools?" && prompt_install_packages "${PACKAGES_EMAIL_RSS[@]}"
-prompt_Yn "Select browser(s)?" && prompt_install_packages "${PACKAGES_WWW[@]}"
-prompt_Yn "Install fonts?" && PACKAGES_SELECTED+=("${PACKAGES_FONTS[@]}")
-#
-# 4 - Prompt confirmation and install selected
-echo -e "\nSelected packages:"
-for package in "${PACKAGES_SELECTED[@]}"; do
-  echo " - $package"
-done
 
-echo -e "\n$ $cmd_package_manager ${PACKAGES_SELECTED[*]}\n"
-prompt_yN "Run install?" && cmd_install_packages "${PACKAGES_SELECTED[*]}" || echo "Skip install."
-#
-# POST INSTALL
-# - clone packages_editor plugins and themes
-# - setup packages_www policies.json
+package_manager=''
+cmd_package_manager=''
+if command -v apt &> /dev/null; then
+  package_manager='apt'
+  cmd_package_manager='sudo apt install'
+  sudo apt update && sudo apt upgrade
+elif command -v pacman &> /dev/null; then
+  package_manager='pacman'
+  cmd_package_manager='sudo pacman -S'
+  sudo pacman -Syu # update system
+fi
 
-# Vim/Neovim
-plugins_vim=(
-  "https://github.com/junegunn/fzf"
-  "https://github.com/junegunn/fzf.vim"
-  "https://github.com/mattn/emmet-vim"
+###################################
+# Packages
+###################################
+
+# Some packages are named differently in some repositories
+LIBNOTIFY='libnotify'
+if [ $package_manager == 'apt' ]; then
+  LIBNOTIFY='libnotify-bin'
+fi
+FIREFOX='firefox'
+if [ "$distribution" == 'debian' ]; then
+  FIREFOX='firefox-esr'
+fi
+
+packages_selected=()
+packages_core=(
+  'wget'
+  'curl'
+  'fzf'
 )
+packages_editors=(
+  'vim'
+  'neovim'
+)
+packages_desktop=(
+  'alacritty'
+  'sxhkd'
+  'xdotool'
+  "$LIBNOTIFY"
+  "inotify-tools"
+  'dunst'
+  'rofi'
+  'redshift'
+)
+packages_www=(
+  "$FIREFOX"
+  'chromium'
+  'lynx'
+)
+packages_email=(
+  'neomutt'
+  'msmtp'
+  'msmtp-mta'
+  'isync'
+)
+packages_fonts=()
+if [ $package_manager == 'apt' ]; then
+  packages_fonts=('fonts-noto' 'fonts-font-awesome')
+elif [ $package_manager == 'pacman' ]; then
+  packages_fonts=('noto-fonts' 'ttf-font-awesome')
+fi
+
 themes_vim=(
   "https://github.com/eremt/vinimal"
+)
+plugins_vim=(
+  "https://github.com/junegunn/fzf.vim"
+  "https://github.com/mattn/emmet-vim"
 )
 plugins_nvim=(
   "${plugins_vim[@]}"
   "https://github.com/neovim/nvim-lspconfig"
 )
-DIR_ROOT_VIM=$HOME/.vim/pack
-DIR_ROOT_NVIM=$HOME/.config/nvim/pack
-DIR_THEMES_VIM=themes/start
-DIR_PLUGINS_VIM=plugins/start
-postinstall_vi () {
-  # Vim
+
+###################################
+# Packages post install
+###################################
+
+postinstall_editors () {
+  # Install vim/nvim themes and plugins
+  local dest_vim="$HOME/.vim/pack"
   if command -v vim &> /dev/null; then
-    mkdir -p "$DIR_ROOT_VIM/$DIR_PLUGINS_VIM" "$DIR_ROOT_VIM/$DIR_THEMES_VIM"
-    for plugin in "${plugins_vim[@]}"; do
-      name=$(basename "$plugin")
-      git clone "$plugin" "$DIR_ROOT_VIM/$DIR_PLUGINS_VIM/$name"
-    done
-    for theme in "${themes_vim[@]}"; do
-      name=$(basename "$theme")
-      git clone "$theme" "$DIR_ROOT_VIM/$DIR_THEMES_VIM/$name"
-    done
+    mkdir -pv "$dest_vim/"{themes,plugins}"/start"
+    clone_repositories "$dest_vim/themes/start" "${themes_vim[@]}"
+    clone_repositories "$dest_vim/plugins/start" "${plugins_vim[@]}"
   fi
-
-  # Neovim
+  local dest_nvim="$XDG_CONFIG_HOME/nvim/pack"
   if command -v nvim &> /dev/null; then
-    mkdir -p "$DIR_ROOT_NVIM/$DIR_PLUGINS_VIM" "$DIR_ROOT_NVIM/$DIR_THEMES_VIM"
-    for plugin in "${plugins_nvim[@]}"; do
-      name=$(basename "$plugin")
-      git clone "$plugin" "$DIR_ROOT_NVIM/$DIR_PLUGINS_VIM/$name"
-    done
-    for theme in "${themes_vim[@]}"; do
-      name=$(basename "$theme")
-      git clone "$theme" "$DIR_ROOT_NVIM/$DIR_THEMES_VIM/$name"
-    done
+    mkdir -pv "$dest_nvim/"{themes,plugins}"/start"
+    clone_repositories "$dest_nvim/themes/start" "${themes_vim[@]}"
+    clone_repositories "$dest_nvim/plugins/start" "${plugins_nvim[@]}"
   fi
 }
-postinstall_vi
-
-# Firefox/Chromium
-DIR_ROOT_FIREFOX=/etc/firefox/policies
-DIR_ROOT_CHROMIUM=/etc/chromium/policies/managed
 postinstall_www () {
+  # Install addons and hardened settings
+  local dest_firefox=/etc/firefox/policies
   if command -v firefox &> /dev/null; then
-    sudo mkdir -p "$DIR_ROOT_FIREFOX"
-    sudo cp "$HOME/.config/mozilla/policies.json" "$DIR_ROOT_FIREFOX/policies.json"
+    sudo mkdir -pv "$dest_firefox"
+    sudo cp "$XDG_CONFIG_HOME/mozilla/policies.json" "$dest_firefox/policies.json"
   fi
+  local dest_chromium=/etc/chromium/policies/managed
   if command -v chromium &> /dev/null; then
-    sudo mkdir -p "$DIR_ROOT_CHROMIUM"
-    sudo cp "$HOME/.config/chromium/policies.json" "$DIR_ROOT_CHROMIUM/policies.json"
+    sudo mkdir -pv "$dest_chromium"
+    sudo cp "$XDG_CONFIG_HOME/chromium/policies.json" "$dest_chromium/policies.json"
   fi
 }
-postinstall_www
+
+###################################
+# Main
+###################################
+
+main () {
+  # install dependency git if it isn't already installed
+  if ! command -v git &> /dev/null; then
+    if prompt_Yn "This script requires git, would you like to install it?"; then
+      $cmd_package_manager git
+    else
+      echo "Dependency git not installed, exit"
+      exit 1
+    fi
+  fi
+
+  cmd_git_dotfiles="git --git-dir=$DIR_DOTFILES --work-tree=$HOME"
+  if prompt_yN "Clone $GIT_DOTFILES?"; then
+    mkdir -pv "$XDG_CONFIG_HOME"
+    git clone --bare "$GIT_DOTFILES" "$DIR_DOTFILES"
+    if ! $cmd_git_dotfiles checkout; then
+      # TODO: git list conflicts, and back them up
+      if prompt_yN "Conflicting files, would you like to overwrite them?"; then
+        $cmd_git_dotfiles checkout -f
+      fi
+    fi
+  fi
+
+  # prompt for packages to install
+  print_section 'Core packages'
+  prompt_install_packages "${packages_core[@]}"
+
+  print_section 'Editors'
+  prompt_install_packages "${packages_editors[@]}"
+
+  print_section 'Desktop packages'
+  prompt_install_packages "${packages_desktop[@]}"
+
+  print_section 'Browsers'
+  prompt_install_packages "${packages_www[@]}"
+
+  print_section 'E-mail'
+  prompt_install_packages "${packages_email[@]}"
+
+  print_section 'Fonts'
+  prompt_install_packages "${packages_fonts[@]}"
+
+  count_packages=${#packages_selected[@]}
+  if [ "$count_packages" -gt 0 ]; then
+    echo -e "\nSelected $count_packages packages:"
+    list_packages "${packages_selected[@]}"
+    echo
+    if prompt_yN "Confirm installation?"; then
+      $cmd_package_manager "${packages_selected[@]}"
+    fi
+  else
+    echo -e '\nNo packages selected.'
+  fi
+
+  # post install selected
+  postinstall_editors
+  postinstall_www
+}
+main
