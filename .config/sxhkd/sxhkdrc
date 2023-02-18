@@ -8,15 +8,15 @@ super + {i,u,o,m,n}
   scratchpads {terminal,audio,files,mail,news}
 
 XF86AudioRaiseVolume
-  desktop-utilities --volume +5%
+  desktop-utilities --volume +2
 XF86AudioLowerVolume
-  desktop-utilities --volume -5%
+  desktop-utilities --volume -2
 XF86AudioMute
   desktop-utilities --volume toggle
 XF86AudioMicMute
   pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 XF86MonBrightnessUp
-  desktop-utilities --brightness +5
+  desktop-utilities --brightness +2
 XF86MonBrightnessDown
-  desktop-utilities --brightness -5
+  desktop-utilities --brightness -2

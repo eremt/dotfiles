@@ -4,15 +4,15 @@
 #
 # TODO:
 # - [ ] Microphone volume and mute
-# - [ ] Remove need for '%' for volume input to match brightness
 #
 set_volume () {
   # pactl expects +5%/-5%
-  next_volume="$1"
+  # grep digits from the input
+  step=$(echo "$1" | grep -Eo '[0-9]')
   if [[ $1 == *"+"* ]]; then
-    pactl set-sink-volume @DEFAULT_SINK@ "$next_volume"
+    pactl set-sink-volume @DEFAULT_SINK@ +"$step"%
   elif [[ $1 == *"-"* ]]; then
-    pactl set-sink-volume @DEFAULT_SINK@ "$next_volume"
+    pactl set-sink-volume @DEFAULT_SINK@ -"$step"%
   elif [[ $1 == "toggle" ]]; then
     pactl set-sink-mute @DEFAULT_SINK@ toggle
   fi
@@ -25,19 +25,23 @@ set_volume () {
   fi
 
   volume_bar=$(echo "$current_volume" | grep -Eo '[0-9]{1,3}')
-  notify-send --urgency="low" -h int:value:"$volume_bar" "Volume"
+  notify_send "Volume" "$volume_bar"
 }
 
 set_brightness () {
   # xbacklight expects -inc 5/-dec 5
-  next_brightness=$(echo "$@" | grep -Eo '[0-9]')
+  step=$(echo "$1" | grep -Eo '[0-9]')
   if [[ $1 == *"+"* ]]; then
-    xbacklight -inc "$next_brightness"
+    xbacklight -inc "$step"
   elif [[ $1 == *"-"* ]]; then
-    xbacklight -dec "$next_brightness"
+    xbacklight -dec "$step"
   fi
   current_brightness=$(xbacklight -get)
-  notify-send --urgency="low" -h int:value:"$current_brightness" "Brightness"
+  notify_send "Brightness" "$current_brightness"
+}
+
+notify_send () {
+  notify-send --urgency='low' -h int:value:"$2" "$1"
 }
 
 case $1 in
