@@ -1,6 +1,9 @@
 super + p
   rofi -show drun -show-icons
 
+super + Escape
+  mouse-leave
+
 super + c
   dunstctl close-all
 

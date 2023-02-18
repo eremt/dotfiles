@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+# Script to move the mouse out of the way but remain in the current window
+#
+if window_id=$(xdotool getwindowfocus); then
+  # Grep output: Geometry 500x300 | 500x300
+  window_size=$(xdotool getwindowgeometry "$window_id" | grep 'Geometry' | grep -Eo '[0-9]+x[0-9]+')
+  # X: window width - some padding
+  mouse_x=$(($(echo "$window_size" | cut -d 'x' -f1) - 20))
+  # Y: window height / 2
+  mouse_y=$(($(echo "$window_size" | cut -d 'x' -f2) / 2))
+  xdotool mousemove --window "$window_id" "$mouse_x" "$mouse_y"
+fi
