@@ -2,7 +2,7 @@
 
 #
 # CONFIG
-DIR_SUCKLESS=$HOME/.suckless
+DIR_SUCKLESS="$HOME"/.suckless
 GIT_SUCKLESS=https://git.suckless.org
 GIT_EREMT=https://github.com/eremt
 
@@ -32,9 +32,9 @@ fi
 
 #
 # INSTALL
-eval sudo "$cmd_package_manager ${dependencies[*]}"
+sudo "$cmd_package_manager ${dependencies[*]}"
 
-mkdir $DIR_SUCKLESS
+mkdir -p "$DIR_SUCKLESS"
 repositories=(
   "$GIT_EREMT/dwm"
   "$GIT_SUCKLESS/dmenu"
@@ -42,10 +42,12 @@ repositories=(
 )
 for repo in "${repositories[@]}"; do
   name=$(basename "$repo")
-  cd "$DIR_SUCKLESS"
+  cd "$DIR_SUCKLESS" || exit 1
+
   git clone "$repo"
-  cd "$DIR_SUCKLESS/$name"
-  sudo make clean install
+  if cd "$DIR_SUCKLESS/$name"; then
+    sudo make clean install
+  fi
 done
 
-echo "exec dwm" | tee -a $HOME/.xinitrc
+echo "exec dwm" | tee -a "$HOME"/.xinitrc
