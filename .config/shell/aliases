@@ -1,4 +1,4 @@
-alias dotfiles='git --git-dir=$HOME/.dotfiles --work-tree=$HOME'
+alias dotfiles='git --git-dir=$HOME/.config/.dotfiles --work-tree=$HOME'
 alias dots='dotfiles'
 
 # jumping around
@@ -17,7 +17,9 @@ alias grep='grep --color=auto'
 alias tree='tree -C'
 
 # create files and directories
-alias mkf='touch'
+function mkf () {
+  mkdir -p $(dirname "$1") && touch "$1"
+}
 alias mkd='mkdir -p'
 # find files and directories
 alias ff='find ./* -type f -name'
